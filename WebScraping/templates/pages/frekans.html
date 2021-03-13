@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class='container'>
+<h3 style='margin-top:30px;'>Sayfada Geçen Kelimelerin Frekanslarını Hesaplama</h3>
+<p>URL içeriğinde (URL’in gösterdiği sayfa içeriğinde) her kelimenin kaçar defa yer aldığını(frekansını) bulunuz.</p>
+<p>Frekansını hesaplamak istediğiniz URL'yi giriniz</p>
+<form action="{% url 'frekansResult' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="quantity" placeholder="URL alanı" size=20>
+    <input type="submit" value="Hesapla">
+</form>
+</div>
+{% endblock %}

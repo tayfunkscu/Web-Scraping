@@ -1,0 +1,8 @@
+#headertext {
+  color: aliceblue;
+}
+
+.footer {
+  display: table-row;
+  height: 1px;
+}

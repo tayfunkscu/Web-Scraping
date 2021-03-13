@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class='container text-center' style="margin-top: 30px;">
+        <h3 style='margin-bottom: 10px;'>Yapmak istediğiniz işlemi seçiniz</h3>
+        <a class="btn btn-success btn-block" href="{% url 'frekans'%}" role="button">Sayfada Geçen Kelimelerin Frekanslarını Hesaplama</a>
+        <a class="btn btn-success btn-block" href="#" role="button">Anahtar Kelime Çıkarma</a>
+        <a class="btn btn-success btn-block" href="#" role="button">İki Sayfa (URL) Arasındaki Benzerlik Skorlaması</a>
+        <a class="btn btn-success btn-block" href="#" role="button">Site İndexleme ve Sıralama</a>
+        <a class="btn btn-success btn-block" href="#" role="button">Semantik Analiz</a>
+    </div>
+{% endblock %}
