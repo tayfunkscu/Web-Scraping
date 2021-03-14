@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    {% if words %}
+        <div class='container'>
+            <h1 class='text-center' style="margin-bottom:30px; margin-top:30px;"> Verilen URL'de en sık geçen ilk 10 kelime</h1>
+            <div class='row'>
+                <div class='col-sm'>
+                    <h3>Kelimeler</h3>
+                    {% for word in words %}
+                        <p>{{word}}</p>
+                    {% endfor %}
+                </div>
+                <div class='col-sm'>
+                    <h3>Frekansları</h3>
+                    {% for num in frequency %}
+                        <p>{{num}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>İçerik Bulunamadı!</p>
+        </div>
+    {% endif %}
+{% endblock %}
