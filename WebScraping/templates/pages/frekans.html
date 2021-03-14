@@ -7,7 +7,7 @@
 <p>Frekansını hesaplamak istediğiniz URL'yi giriniz</p>
 <form action="{% url 'frekansResult' %}" method="POST">
     {% csrf_token %}
-    <input type="text" name="quantity" placeholder="URL alanı" size=20>
+    <input type="text" name="quantity" placeholder="URL alanı">
     <input type="submit" value="Hesapla">
 </form>
 </div>

@@ -1,7 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class='container'>
-    {{ url }}
-</div>
+
+    {% if allContent %}
+        <div class='container'>
+            {% for tags in allContent %}
+                <p>{{tags}}</p>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>İçerik Bulunamadı!</p>
+        </div>
+    {% endif %}
 {% endblock %}
