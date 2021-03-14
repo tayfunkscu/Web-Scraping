@@ -10,7 +10,7 @@ import string
 checklist
 + url'yi al ve sonuç sayfasına yazdır
 + url'nin içeriğini ayıkla ve sonuç sayfasına yazdır
-- p etiketlerinin içeriklerini kelimelere ayırkan bir fonksiyon yaz
++ p etiketlerinin içeriklerini kelimelere ayırkan bir fonksiyon yaz
 - kelimelerin frekansını hesaplayan bir fonksiyon yaz
 """
 
@@ -27,7 +27,8 @@ def frekansResult(request):
     url = request.POST.get("quantity")
     allContent = scrapeUrl(url)
     wordList = splitWords(allContent)
-    context = {"allContent": wordList}
+    frequency = calculateFrequency(wordList)
+    context = {"words": frequency.keys(), "frequency": frequency.values()}
     return render(request, "pages/frekansResult.html", context)
 
 
@@ -47,10 +48,21 @@ def scrapeUrl(url):
 
 
 def splitWords(allContentList):
-    wordList = []
+    wordList = ""
     for tag in allContentList:
         tag = tag.lower()
         tag_no_punctuation = re.sub("[^\w\s]", "", tag)
-        tag_no_punctuation = tag_no_punctuation.split()
-        wordList.append(tag_no_punctuation)
+        wordList = wordList + tag_no_punctuation
+    wordList = wordList.split()
     return wordList
+
+
+def calculateFrequency(wordlist):
+    frequency = {}
+    for word in wordlist:
+        if word not in frequency.keys():
+            frequency[word] = 1
+        else:
+            num = frequency[word] + 1
+            frequency.update({word: num})
+    return frequency
