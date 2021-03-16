@@ -25,9 +25,7 @@ def frekans(request):
 
 def frekansResult(request):
     url = request.POST.get("quantity")
-    allContent = scrapeUrl(url)
-    wordList = splitWords(allContent)
-    frequency = calculateFrequency(wordList)
+    frequency = calculateFrequency(url)
     context = {"words": frequency.keys(), "frequency": frequency.values()}
     return render(request, "pages/frekansResult.html", context)
 
@@ -38,12 +36,28 @@ def keyword(request):
 
 def keywordResult(request):
     url = request.POST.get("quantity")
-    allContent = scrapeUrl(url)
-    wordList = splitWords(allContent)
-    frequency = calculateFrequency(wordList)
-    top10 = sortFrequency(frequency)
+    top10 = exportTop10(url)
     context = {"words": top10.keys(), "frequency": top10.values()}
     return render(request, "pages/keywordResult.html", context)
+
+def similarityScore(request):
+    return render(request, "pages/similarityScore.html")
+
+def similarityScoreResult(request):
+    url_1 = request.POST.get("url_1")
+    url_2 = request.POST.get("url_2")
+    top10_1= exportTop10(url_1)
+    top10_2 = exportTop10(url_2)
+    similarity = calculateSimilarity(top10_1, top10_2, url_2)
+    context = {
+        "words_1": top10_1.keys(), 
+        "frequency_1": top10_1.values(),
+        "words_2": top10_2.keys(), 
+        "frequency_2": top10_2.values(),
+        "similarity": similarity,
+    }
+
+    return render(request, "pages/similarityScoreResult.html", context)
 
 
 """
@@ -72,9 +86,11 @@ def splitWords(allContentList):
     return wordList
 
 
-def calculateFrequency(wordlist):
+def calculateFrequency(url):
+    allContent = scrapeUrl(url)
+    wordList = splitWords(allContent)
     frequency = {}
-    for word in wordlist:
+    for word in wordList:
         if word not in frequency.keys():
             frequency[word] = 1
         else:
@@ -83,8 +99,8 @@ def calculateFrequency(wordlist):
     return frequency
 
 
-def sortFrequency(frequency):
-
+def exportTop10(url):
+    frequency = calculateFrequency(url)
     baglacList = [
         "zira",
         "yoksa",
@@ -137,7 +153,7 @@ def sortFrequency(frequency):
     i = 0
     top10 = {}
     for key, value in frequency.items():
-        if i is 10:
+        if i == 10:
             break
         else:
             if key in baglacList:
@@ -147,3 +163,27 @@ def sortFrequency(frequency):
                 i = i + 1
 
     return top10
+
+def calculateSimilarity(top10_1, top10_2, url_2):
+    frequency = calculateFrequency(url_2)
+    keyWordCarpim = 1
+    totalWordCount = 0
+
+    for keys_1 in top10_1.keys():
+        if keys_1 in top10_2.keys():
+            keyWordCarpim = keyWordCarpim * top10_2[keys_1]
+    
+    if keyWordCarpim == 1:
+        return totalWordCount
+
+    for value in frequency.values():
+        totalWordCount = totalWordCount + value
+
+    print(totalWordCount)
+    print(keyWordCarpim)
+    result = (keyWordCarpim / totalWordCount)*100
+    return  f'{result:.4f}'
+    
+
+
+

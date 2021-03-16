@@ -2,7 +2,9 @@
 <div class="container">
     <div class='row' style="background-color: #01953f;">
         <div class="col-md-4" style="height: 200px;">
-            <img src="{% static 'img/logo.png' %}" class='img-responsive' style='height: 200px;'  alt='logo'>
+        <a href="{% url 'index' %}">
+            <img src="{% static 'img/logo.png' %}" class='img-responsive' style='height: 200px;'  alt='logo' title="Anasayfa">
+        </a>
         </div>
         <div id="headertext" class="col-md-8">
             <div style="margin-top: 30px;">

@@ -7,4 +7,6 @@ urlpatterns = [
     path("frekansResult", views.frekansResult, name="frekansResult"),
     path("keyword", views.keyword, name="keyword"),
     path("keywordResult", views.keywordResult, name="keywordResult"),
+    path("similarityScore", views.similarityScore, name="similarityScore"),
+    path("similarityScoreResult", views.similarityScoreResult, name="similarityScoreResult"),
 ]

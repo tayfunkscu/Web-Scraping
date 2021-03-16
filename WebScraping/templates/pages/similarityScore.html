@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class='container'>
+<h3 style='margin-top:30px;'>İki Sayfa (URL) Arasındaki Benzerlik Skorlaması</h3>
+<p>İkinci bölümde 1. URL için elde edilen anahtar kelimelerin 2. URL’nin içeriğinde yer alma sayısına
+dayalı bir benzerlik skor formulü tanımlayınız. </p>
+<p>Frekansını hesaplamak istediğiniz URL'leri giriniz</p>
+<form action="{% url 'similarityScoreResult' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="url_1" placeholder="URL 1 alanı">
+    <input type="text" name="url_2" placeholder="URL 2 alanı">
+    <input type="submit" value="Hesapla">
+</form>
+</div>
+{% endblock %}
