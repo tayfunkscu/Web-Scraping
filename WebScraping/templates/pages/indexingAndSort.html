@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class='container'>
+<h3 style='margin-top:30px;'>Site İndexleme ve Sıralama</h3>
+<p>Bu aşamada projenin web sitesindeki bir sayfada URL girilecek
+    bir alan oluşturulacaktır. Girilen bu URL’nin içeriği ile web site kümesindeki her bir web sayfasının
+    içeriklerinin benzerlik skorları ayrı ayrı hesaplanacaktır. Ancak bu sefer skor hesaplaması yaparken
+    bu web site kümesinde bulunan web sayfalarının içeriğine ilaveten yine bu sayfalarda bulunan tüm
+    alt URL’leri de dikkate alınmalıdır. </p>
+<p>Frekansını hesaplamak istediğiniz URL'leri giriniz</p>
+<form action="{% url 'indexingAndSortResult' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="url_1" placeholder="URL 1 alanı">
+    <input type="text" style="width: 700px;" name="url_kumesi" placeholder="Toplu URL alanı">
+    <input type="submit" value="Hesapla">
+</form>
+</div>
+{% endblock %}

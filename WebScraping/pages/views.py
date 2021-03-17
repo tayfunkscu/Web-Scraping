@@ -5,15 +5,6 @@ import requests
 import re
 import string
 
-# Create your views here.
-"""
-checklist
-+ url'yi al ve sonuç sayfasına yazdır
-+ url'nin içeriğini ayıkla ve sonuç sayfasına yazdır
-+ p etiketlerinin içeriklerini kelimelere ayırkan bir fonksiyon yaz
-+ kelimelerin frekansını hesaplayan bir fonksiyon yaz
-"""
-
 
 def index(request):
     return render(request, "pages/index.html")
@@ -40,19 +31,21 @@ def keywordResult(request):
     context = {"words": top10.keys(), "frequency": top10.values()}
     return render(request, "pages/keywordResult.html", context)
 
+
 def similarityScore(request):
     return render(request, "pages/similarityScore.html")
+
 
 def similarityScoreResult(request):
     url_1 = request.POST.get("url_1")
     url_2 = request.POST.get("url_2")
-    top10_1= exportTop10(url_1)
+    top10_1 = exportTop10(url_1)
     top10_2 = exportTop10(url_2)
     similarity = calculateSimilarity(top10_1, top10_2, url_2)
     context = {
-        "words_1": top10_1.keys(), 
+        "words_1": top10_1.keys(),
         "frequency_1": top10_1.values(),
-        "words_2": top10_2.keys(), 
+        "words_2": top10_2.keys(),
         "frequency_2": top10_2.values(),
         "similarity": similarity,
     }
@@ -60,9 +53,50 @@ def similarityScoreResult(request):
     return render(request, "pages/similarityScoreResult.html", context)
 
 
+def indexingAndSort(request):
+    return render(request, "pages/indexingAndSort.html")
+
+
+def indexingAndSortResult(request):
+    url_1 = request.POST.get("url_1")
+    url_kumesi = request.POST.get("url_kumesi")
+    url_kumesi = URLParser(url_kumesi)
+    url_kumesi_2 = [subLink(link) for link in url_kumesi]
+    url_kumesi_3 = [subLink(link) for link in url_kumesi_2]
+    total_url = url_kumesi + url_kumesi_2 + url_kumesi_3
+    top10_1 = exportTop10(url_1)
+    similarity = {}
+
+    for i in range(len(total_url)):
+        top10_2 = exportTop10(total_url[i])
+        similarity[total_url[i]] = calculateSimilarity(top10_1, top10_2, total_url[i])
+
+    for key in similarity.keys():
+        similarity[key] = float(similarity[key])
+
+    similarity = dict(reversed(sorted(similarity.items(), key=lambda item: item[1])))
+
+    url_kumesi_1_top10 = URLKumesi_getTop10(url_kumesi)
+    url_kumesi_2_top10 = URLKumesi_getTop10(url_kumesi_2)
+    url_kumesi_3_top10 = URLKumesi_getTop10(url_kumesi_3)
+
+    context = {
+        "similarity_url": similarity.keys(),
+        "similarity_score": similarity.values(),
+        "url_kumesi": url_kumesi_1_top10,
+        "url_kumesi_link": url_kumesi_1_top10.keys(),
+    }
+    return render(request, "pages/indexingAndSortResult.html", context)
+
+
 """
-Verilen url'deki p etiketlerinin içeriklerine sahip bir string listesi döndürür
 ///////////////////////////////////////////////////////////////////////////////
+        "url_kumesi_1_link": url_kumesi_2_top10.keys(),
+        "url_kumesi_1_top10_words": url_kumesi_2_top10.values().keys(),
+        "url_kumesi_1_top10_frequencies": url_kumesi_2_top10.values().values(),
+        "url_kumesi_2_link": url_kumesi_3_top10.keys(),
+        "url_kumesi_2_top10_words": url_kumesi_3_top10.values().keys(),
+        "url_kumesi_2_top10_frequencies": url_kumesi_3_top10.values().values(),
 """
 
 
@@ -164,6 +198,7 @@ def exportTop10(url):
 
     return top10
 
+
 def calculateSimilarity(top10_1, top10_2, url_2):
     frequency = calculateFrequency(url_2)
     keyWordCarpim = 1
@@ -172,18 +207,32 @@ def calculateSimilarity(top10_1, top10_2, url_2):
     for keys_1 in top10_1.keys():
         if keys_1 in top10_2.keys():
             keyWordCarpim = keyWordCarpim * top10_2[keys_1]
-    
+
     if keyWordCarpim == 1:
         return totalWordCount
 
     for value in frequency.values():
         totalWordCount = totalWordCount + value
 
-    print(totalWordCount)
-    print(keyWordCarpim)
-    result = (keyWordCarpim / totalWordCount)*100
-    return  f'{result:.4f}'
-    
+    result = (keyWordCarpim / totalWordCount) * 100
+    return f"{result:.4f}"
 
 
+def URLParser(url_kumesi):
+    urlList = url_kumesi.split(",")
+    return urlList
 
+
+def subLink(url):
+    r = requests.get(url)
+    source = BeautifulSoup(r.content, "lxml")
+    link = source.find("a", attrs={"href": re.compile("^http")})
+
+    return link.get("href")
+
+
+def URLKumesi_getTop10(url_kumesi):
+    url_kumesi_top10 = {}
+    for i in range(len(url_kumesi)):
+        url_kumesi_top10[url_kumesi[i]] = exportTop10(url_kumesi[i])
+    return url_kumesi_top10

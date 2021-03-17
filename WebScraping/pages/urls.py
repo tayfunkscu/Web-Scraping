@@ -8,5 +8,15 @@ urlpatterns = [
     path("keyword", views.keyword, name="keyword"),
     path("keywordResult", views.keywordResult, name="keywordResult"),
     path("similarityScore", views.similarityScore, name="similarityScore"),
-    path("similarityScoreResult", views.similarityScoreResult, name="similarityScoreResult"),
+    path(
+        "similarityScoreResult",
+        views.similarityScoreResult,
+        name="similarityScoreResult",
+    ),
+    path("indexingAndSort", views.indexingAndSort, name="indexingAndSort"),
+    path(
+        "indexingAndSortResult",
+        views.indexingAndSortResult,
+        name="indexingAndSortResult",
+    ),
 ]

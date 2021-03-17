@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    {% if similarity_url %}
+        <div class='container'>
+            <div class='row'>
+                <h1 class='text-center' style="margin-bottom:40px; margin-top:30px;"> Verilen URL Kümesinin ve Kümenin Alt Linklerinin Benzerlik Oranı Sıralaması</h1>
+                <div class="col-sm">
+                    <h3>URL'ler</h3>
+                    {% for url in similarity_url %}
+                        <p>{{url}}</p>
+                    {% endfor %}
+                </div>
+                <div class="col-sm">
+                    <h3>Benzerlik Oranları</h3>
+                    {% for score in similarity_score %}
+                        <p> % {{score}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="row">
+                <h3 class='text-center' style="margin-bottom:40px; margin-top:30px;"> Her URL (bir web sitesi) i¸cin, sırasını, skorunu, alt URL’lerin a˘ ga¸c yapısını ve her du¨˘ gu¨mdeki
+                    her bir anahtar kelimenin yer alma sayısı ile birlikte yazdırın.</h3>
+                    {% for url in url_kumesi_link %}
+                        <div class="row">
+                            <h5>Ana URL</h3>
+                            <div class="col-sm">
+                                <p>{{url}}</p>
+                            </div>
+                            <div class="col-sm">
+                                {% for word in url_kumesi[{{url}}].values().keys() %}
+                                    <p>{{word}}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm">
+                                {% for word in url_kumesi[{{url}}].values().values() %}
+                                    <p>{{word}}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>İçerik Bulunamadı!</p>
+        </div>
+    {% endif %}
+{% endblock %}
