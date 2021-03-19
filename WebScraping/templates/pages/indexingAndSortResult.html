@@ -21,26 +21,26 @@
             </div>
 
             <div class="row">
-                <h3 class='text-center' style="margin-bottom:40px; margin-top:30px;"> Her URL (bir web sitesi) i¸cin, sırasını, skorunu, alt URL’lerin a˘ ga¸c yapısını ve her du¨˘ gu¨mdeki
+                <h3 class='text-center' style="margin-bottom:40px; margin-top:30px;"> Her URL (bir web sitesi) için, sırasını, skorunu, alt URL’lerin ağaç yapısını ve her düğümümdeki
                     her bir anahtar kelimenin yer alma sayısı ile birlikte yazdırın.</h3>
-                    {% for url in url_kumesi_link %}
-                        <div class="row">
-                            <h5>Ana URL</h3>
-                            <div class="col-sm">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h5>Ana URL</h5>
+                            {% for url in url_kumesi_link %}
                                 <p>{{url}}</p>
-                            </div>
-                            <div class="col-sm">
-                                {% for word in url_kumesi[{{url}}].values().keys() %}
-                                    <p>{{word}}</p>
-                                {% endfor %}
-                            </div>
-                            <div class="col-sm">
-                                {% for word in url_kumesi[{{url}}].values().values() %}
-                                    <p>{{word}}</p>
-                                {% endfor %}
-                            </div>
+                                <br><br><br><br><br><br><br>
+                                <br><br><br><br><br><br><br>
+                            {% endfor %}
                         </div>
-                    {% endfor %}
+                        <div class="col-sm">
+                            <br>
+                            {% for data in url_kumesi %}
+                                {% for key,value in data.items %}
+                                    <p> {{key}}  {{value}}</p>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
             </div>
         </div>
     {% else %}

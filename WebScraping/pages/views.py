@@ -83,7 +83,7 @@ def indexingAndSortResult(request):
     context = {
         "similarity_url": similarity.keys(),
         "similarity_score": similarity.values(),
-        "url_kumesi": url_kumesi_1_top10,
+        "url_kumesi": url_kumesi_1_top10.values(),
         "url_kumesi_link": url_kumesi_1_top10.keys(),
     }
     return render(request, "pages/indexingAndSortResult.html", context)
