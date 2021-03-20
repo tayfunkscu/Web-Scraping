@@ -4,8 +4,8 @@
 
     {% if similarity_url %}
         <div class='container'>
-            <div class='row'>
-                <h1 class='text-center' style="margin-bottom:40px; margin-top:30px;"> Verilen URL Kümesinin ve Kümenin Alt Linklerinin Benzerlik Oranı Sıralaması</h1>
+            <div class='row text-center'>
+                <h3 style="margin-bottom:40px; margin-left:70px; margin-top:30px;"> Verilen URL Kümesinin ve Kümenin Alt Linklerinin Benzerlik Oranı Sıralaması</h3>
                 <div class="col-sm">
                     <h3>URL'ler</h3>
                     {% for url in similarity_url %}
@@ -24,20 +24,49 @@
                 <h3 class='text-center' style="margin-bottom:40px; margin-top:30px;"> Her URL (bir web sitesi) için, sırasını, skorunu, alt URL’lerin ağaç yapısını ve her düğümümdeki
                     her bir anahtar kelimenin yer alma sayısı ile birlikte yazdırın.</h3>
                     <div class="row">
-                        <div class="col-sm">
+                        <div class="col" style="width: 200px; overflow: auto;">
                             <h5>Ana URL</h5>
                             {% for url in url_kumesi_link %}
-                                <p>{{url}}</p>
-                                <br><br><br><br><br><br><br>
-                                <br><br><br><br><br><br><br>
+                                <p style="margin-top: 35px; margin-bottom:375px">{{url}}</p>
                             {% endfor %}
                         </div>
-                        <div class="col-sm">
-                            <br>
+                        <div class="col" style="width: 200px;">
+                            <h5>Anahtar Kelime/Frekans</h5>
                             {% for data in url_kumesi %}
                                 {% for key,value in data.items %}
                                     <p> {{key}}  {{value}}</p>
                                 {% endfor %}
+                                <br>
+                            {% endfor %}
+                        </div>
+                        <div class="col" style="width: 200px; overflow: auto;">
+                            <h5>URL- Derinlik 2</h5>
+                            {% for url in url_kumesi_link_2 %}
+                                <p style="margin-top: 35px; margin-bottom:375px">{{url}}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="col" style="width: 200px; ">
+                            <h5>Anahtar Kelime/Frekans</h5>
+                            {% for data in url_kumesi_2 %}
+                                {% for key,value in data.items %}
+                                    <p> {{key}}  {{value}}</p>
+                                {% endfor %}
+                                <br>
+                            {% endfor %}
+                        </div>
+                        <div class="col" style="width: 200px; overflow: auto;">
+                            <h5>URL- Derinlik 3</h5>
+                            {% for url in url_kumesi_link_3 %}
+                                <p style="margin-top: 35px; margin-bottom:375px">{{url}}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="col"style="width: 200px;">
+                            <h5>Anahtar Kelime/Frekans</h5>
+                            {% for data in url_kumesi_3 %}
+                                {% for key,value in data.items %}
+                                    <p> {{key}}  {{value}}</p>
+                                {% endfor %}
+                                <br>
                             {% endfor %}
                         </div>
                     </div>

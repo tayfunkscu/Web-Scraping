@@ -41,7 +41,13 @@ def similarityScoreResult(request):
     url_2 = request.POST.get("url_2")
     top10_1 = exportTop10(url_1)
     top10_2 = exportTop10(url_2)
-    similarity = calculateSimilarity(top10_1, top10_2, url_2)
+
+    similarity = ""
+    if url_1 == url_2:
+        similarity = "100"
+    else:
+        similarity = calculateSimilarity(top10_1, top10_2, url_2)
+
     context = {
         "words_1": top10_1.keys(),
         "frequency_1": top10_1.values(),
@@ -85,19 +91,12 @@ def indexingAndSortResult(request):
         "similarity_score": similarity.values(),
         "url_kumesi": url_kumesi_1_top10.values(),
         "url_kumesi_link": url_kumesi_1_top10.keys(),
+        "url_kumesi_2": url_kumesi_2_top10.values(),
+        "url_kumesi_link_2": url_kumesi_2_top10.keys(),
+        "url_kumesi_3": url_kumesi_3_top10.values(),
+        "url_kumesi_link_3": url_kumesi_3_top10.keys(),
     }
     return render(request, "pages/indexingAndSortResult.html", context)
-
-
-"""
-///////////////////////////////////////////////////////////////////////////////
-        "url_kumesi_1_link": url_kumesi_2_top10.keys(),
-        "url_kumesi_1_top10_words": url_kumesi_2_top10.values().keys(),
-        "url_kumesi_1_top10_frequencies": url_kumesi_2_top10.values().values(),
-        "url_kumesi_2_link": url_kumesi_3_top10.keys(),
-        "url_kumesi_2_top10_words": url_kumesi_3_top10.values().keys(),
-        "url_kumesi_2_top10_frequencies": url_kumesi_3_top10.values().values(),
-"""
 
 
 def scrapeUrl(url):
