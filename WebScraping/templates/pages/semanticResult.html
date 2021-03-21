@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    {% if words %}
+        <div class='container'>
+            <div class='row text-center'>
+                <div class="col-sm">
+                    {% for word in words %}
+                        <p>{{word}}</p>
+                    {% endfor %}
+                </div>
+                <div class="col-sm">
+                    {% for frequency in frequencies %}
+                        <p>{{frequency}}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>İçerik Bulunamadı!</p>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -99,6 +99,29 @@ def indexingAndSortResult(request):
     return render(request, "pages/indexingAndSortResult.html", context)
 
 
+def semantic(request):
+    return render(request, "pages/semantic.html")
+
+
+def semanticResult(request):
+    url_1 = request.POST.get("url_1")
+    url_kumesi = request.POST.get("url_kumesi")
+
+    result = semanticAnalysis(url_1)
+
+    context = {
+        "words": result.key(),
+        "frequencies": result.values(),
+    }
+
+    return render(request, "pages/semanticResult.html", context)
+
+
+"""
+/////////////////////////////////////////
+"""
+
+
 def scrapeUrl(url):
     r = requests.get(url)
     source = BeautifulSoup(r.content, "lxml")
@@ -235,3 +258,36 @@ def URLKumesi_getTop10(url_kumesi):
     for i in range(len(url_kumesi)):
         url_kumesi_top10[url_kumesi[i]] = exportTop10(url_kumesi[i])
     return url_kumesi_top10
+
+
+def fileOperations():
+    file1 = open(f"kelime_esanlamlisi.txt", "r", encoding="utf8")
+    Lines = file1.readlines()
+    es_anlamlilar = {}
+    for line in Lines:
+        words = line.split()
+        if words[0] in es_anlamlilar.keys():
+            es_anlamlilar[words[0]] = es_anlamlilar[words[0]] + words[1]
+        else:
+            es_anlamlilar[words[0]] = words[1]
+
+    return es_anlamlilar
+
+
+def semanticAnalysis(url):
+    kelimeler = calculateFrequency(url)
+    top10 = exportTop10(url)
+    es_anlamlilar = fileOperations()
+    semantik = {}
+
+    for kelime in top10.keys():
+        for kelime_2 in kelimeler.keys():
+            if kelime_2 in es_anlamlilar[kelime]:
+                if kelime_2 in semantik.keys():
+                    semantik[kelime_2] = semantik[kelime_2] + 1
+                else:
+                    semantik[kelime_2] = 1
+            else:
+                continue
+
+    return semantik

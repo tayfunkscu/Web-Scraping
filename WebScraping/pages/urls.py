@@ -19,4 +19,6 @@ urlpatterns = [
         views.indexingAndSortResult,
         name="indexingAndSortResult",
     ),
+    path("semantic", views.semantic, name="semantic"),
+    path("semanticReuslt", views.semanticResult, name="semanticResult"),
 ]

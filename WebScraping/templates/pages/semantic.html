@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class='container'>
+<h3 style='margin-top:30px;'>Semantik Analiz</h3>
+<p>Verilen web siteleri i¸cerisinde anahtar kelimelerle semantik olarak alakalı kelimeler
+    olabilir. Örneğin, “ulusal” yerine “milli” kelimesi yer alabilir. Bu kelimelere “alakalı
+    anahtar kelimeler” diyelim. Alakalı anahtar kelimeleri bulun ve yazdırın. Yinelemeli olarak 4. aşamadaki analizi yapınız.</p>
+<p>Frekansını hesaplamak istediğiniz URL'leri giriniz</p>
+<form action="{% url 'semanticResult' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="url_1" placeholder="URL 1 alanı">
+    <input type="text" style="width: 700px;" name="url_kumesi" placeholder="Toplu URL alanı">
+    <input type="submit" value="Hesapla">
+</form>
+</div>
+{% endblock %}
