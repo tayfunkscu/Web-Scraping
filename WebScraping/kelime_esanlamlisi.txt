@@ -10,8 +10,6 @@ abacı	asalak
 abacı	kâbus
 abacı	umacı
 abacılık	keçecilik
-abad etmek	bayındırlaştırmak
-abad olmak	bayındırlaşmak
 abadan	şen
 abadan	bayındır
 abadan	cömert
@@ -41,7 +39,6 @@ abanoz	abanozgillerden
 abanoz	koyu
 abanoz	kerhane
 abanoz	sedef kakma
-abanoz gibi	kapkara
 abanozgillerden	abanoz
 abanozlaşmak	yanmak
 abar	gösteriş
@@ -85,13 +82,8 @@ abartmacılık	abartıcılık
 abartmacılık	mübalâğacılık
 abartmadan	abartısız
 abartmadan	abartmasız
-abartmak	bire beş katmak
-abartmak	bire beşkatmak
 abartmak	büyültmek
 abartmak	büyütmek
-abartmak	habbeyi kubbe yapmak
-abartmak	izam etmek
-abartmak	mübalâğa etmek
 abartmak	obartmak
 abartmak	şişirmek
 abartmak	zortlamak

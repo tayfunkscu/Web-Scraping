@@ -107,12 +107,9 @@ def semanticResult(request):
     url_1 = request.POST.get("url_1")
     url_kumesi = request.POST.get("url_kumesi")
 
-    result = semanticAnalysis(url_1)
+    semantik = semanticAnalysis(url_1)
 
-    context = {
-        "words": result.key(),
-        "frequencies": result.values(),
-    }
+    context = {"words": semantik.keys(), "frequencies": semantik.values()}
 
     return render(request, "pages/semanticResult.html", context)
 
@@ -266,10 +263,11 @@ def fileOperations():
     es_anlamlilar = {}
     for line in Lines:
         words = line.split()
-        if words[0] in es_anlamlilar.keys():
-            es_anlamlilar[words[0]] = es_anlamlilar[words[0]] + words[1]
-        else:
-            es_anlamlilar[words[0]] = words[1]
+        if len(words) == 2:
+            if words[0] in es_anlamlilar.keys():
+                es_anlamlilar[words[0]] = es_anlamlilar[words[0]] + "," + words[1]
+            else:
+                es_anlamlilar[words[0]] = words[1]
 
     return es_anlamlilar
 
@@ -282,12 +280,15 @@ def semanticAnalysis(url):
 
     for kelime in top10.keys():
         for kelime_2 in kelimeler.keys():
-            if kelime_2 in es_anlamlilar[kelime]:
-                if kelime_2 in semantik.keys():
-                    semantik[kelime_2] = semantik[kelime_2] + 1
+            if kelime in es_anlamlilar.keys():
+                if kelime_2 in es_anlamlilar[kelime]:
+                    print(kelime_2, es_anlamlilar[kelime])
+                    print("-----------------------")
+                    if kelime_2 in semantik.keys():
+                        semantik[kelime_2] = semantik[kelime_2] + 1
+                    else:
+                        semantik[kelime_2] = 1
                 else:
-                    semantik[kelime_2] = 1
-            else:
-                continue
+                    continue
 
     return semantik
