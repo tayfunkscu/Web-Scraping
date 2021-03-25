@@ -106,10 +106,36 @@ def semantic(request):
 def semanticResult(request):
     url_1 = request.POST.get("url_1")
     url_kumesi = request.POST.get("url_kumesi")
+    url_kumesi = URLParser(url_kumesi)
+    url_kumesi_2 = [subLink(link) for link in url_kumesi]
+    url_kumesi_3 = [subLink(link) for link in url_kumesi_2]
+    total_url = url_kumesi + url_kumesi_2 + url_kumesi_3
+    top10_1 = exportTop10(url_1)
+    similarity = {}
 
-    semantik = semanticAnalysis(url_1)
+    for i in range(len(total_url)):
+        top10_2 = exportTop10(total_url[i])
+        similarity[total_url[i]] = calculateSimilarity(top10_1, top10_2, total_url[i])
 
-    context = {"words": semantik.keys(), "frequencies": semantik.values()}
+    for key in similarity.keys():
+        similarity[key] = float(similarity[key])
+
+    similarity = dict(reversed(sorted(similarity.items(), key=lambda item: item[1])))
+
+    url_kumesi_1_top10 = multipleSemanticAnalysis(url_kumesi)
+    url_kumesi_2_top10 = multipleSemanticAnalysis(url_kumesi_2)
+    url_kumesi_3_top10 = multipleSemanticAnalysis(url_kumesi_3)
+
+    context = {
+        "similarity_url": similarity.keys(),
+        "similarity_score": similarity.values(),
+        "url_kumesi": url_kumesi_1_top10.values(),
+        "url_kumesi_link": url_kumesi_1_top10.keys(),
+        "url_kumesi_2": url_kumesi_2_top10.values(),
+        "url_kumesi_link_2": url_kumesi_2_top10.keys(),
+        "url_kumesi_3": url_kumesi_3_top10.values(),
+        "url_kumesi_link_3": url_kumesi_3_top10.keys(),
+    }
 
     return render(request, "pages/semanticResult.html", context)
 
@@ -257,6 +283,13 @@ def URLKumesi_getTop10(url_kumesi):
     return url_kumesi_top10
 
 
+def multipleSemanticAnalysis(url_kumesi):
+    url_kumesi_semantik = {}
+    for i in range(len(url_kumesi)):
+        url_kumesi_semantik[url_kumesi[i]] = semanticAnalysis(url_kumesi[i])
+    return url_kumesi_semantik
+
+
 def fileOperations():
     file1 = open(f"kelime_esanlamlisi.txt", "r", encoding="utf8")
     Lines = file1.readlines()
@@ -272,23 +305,77 @@ def fileOperations():
     return es_anlamlilar
 
 
-def semanticAnalysis(url):
+def frequencyWithoutBaglac(url):
     kelimeler = calculateFrequency(url)
+    newKelimeler = {}
+
+    baglacList = [
+        "zira",
+        "yoksa",
+        "yine",
+        "yeter",
+        "ki",
+        "yalnız",
+        "yahut",
+        "da",
+        "ya",
+        "veyahut",
+        "veya",
+        "ve",
+        "üstelik",
+        "öyleyse",
+        "öyle",
+        "oysaki",
+        "oysa",
+        "nitekim",
+        "ne",
+        "de",
+        "ne",
+        "yazık",
+        "var",
+        "nasıl",
+        "mademki",
+        "lâkin",
+        "kısacası",
+        "ise",
+        "ile",
+        "hem",
+        "hele",
+        "hatta",
+        "hâlbuki",
+        "gerek",
+        "gerekse",
+        "gene",
+        "fakat",
+        "demek",
+        "dahi",
+        "çünkü",
+        "bile",
+        "ancak",
+        "ama",
+        "açıkçası",
+    ]
+
+    for key, value in kelimeler.items():
+        if key not in baglacList:
+            newKelimeler[key] = value
+
+    return newKelimeler
+
+
+def semanticAnalysis(url):
+    kelimeler = frequencyWithoutBaglac(url)
     top10 = exportTop10(url)
     es_anlamlilar = fileOperations()
     semantik = {}
 
     for kelime in top10.keys():
-        for kelime_2 in kelimeler.keys():
-            if kelime in es_anlamlilar.keys():
-                if kelime_2 in es_anlamlilar[kelime]:
-                    print(kelime_2, es_anlamlilar[kelime])
-                    print("-----------------------")
-                    if kelime_2 in semantik.keys():
-                        semantik[kelime_2] = semantik[kelime_2] + 1
-                    else:
-                        semantik[kelime_2] = 1
-                else:
-                    continue
+        if kelime in es_anlamlilar.keys():
+            print(kelime, es_anlamlilar[kelime])
+            print("------------------")
+            mutfak = es_anlamlilar[kelime].split(",")
+            for m in mutfak:
+                if m in kelimeler.keys():
+                    semantik[m] = kelimeler[m]
 
     return semantik

@@ -2,19 +2,77 @@
 
 {% block content %}
 
-    {% if words %}
+    {% if similarity_url %}
         <div class='container'>
             <div class='row text-center'>
+                <h3 style="margin-bottom:40px; margin-left:70px; margin-top:30px;"> Verilen URL Kümesinin ve Kümenin Alt Linklerinin Benzerlik Oranı Sıralaması</h3>
                 <div class="col-sm">
-                    {% for word in words %}
-                        <p>{{word}}</p>
+                    <h3>URL'ler</h3>
+                    {% for url in similarity_url %}
+                        <p>{{url}}</p>
                     {% endfor %}
                 </div>
                 <div class="col-sm">
-                    {% for frequency in frequencies %}
-                        <p>{{frequency}}</p>
+                    <h3>Benzerlik Oranları</h3>
+                    {% for score in similarity_score %}
+                        <p> % {{score}}</p>
                     {% endfor %}
                 </div>
+            </div>
+
+            <div class="row">
+                <h3 class='text-center' style="margin-bottom:40px; margin-top:30px;"> Her URL (bir web sitesi) için, sırasını, skorunu, alt URL’lerin ağaç yapısını ve her düğümümdeki
+                    her bir anahtar kelimenin yer alma sayısı ile birlikte yazdırın.</h3>
+                    <div class="row">
+                        <div class="col" style="width: 200px; overflow: auto;">
+                            <h5>Ana URL</h5>
+                            {% for url in url_kumesi_link %}
+                                <p style="margin-top: 35px; margin-bottom:650px">{{url}}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="col" style="width: 200px;">
+                            <h5>Anahtar Kelime/Frekans</h5>
+                            {% for data in url_kumesi %}
+                                <div style="height: 700px">
+                                    {% for key,value in data.items %}
+                                    <p> {{key}}  {{value}}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col" style="width: 200px; overflow: auto;">
+                            <h5>URL- Derinlik 2</h5>
+                            {% for url in url_kumesi_link_2 %}
+                                <p style="margin-top: 35px; margin-bottom:650px">{{url}}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="col" style="width: 200px; ">
+                            <h5>Anahtar Kelime/Frekans</h5>
+                            {% for data in url_kumesi_2 %}
+                                <div style="height: 700px">
+                                    {% for key,value in data.items %}
+                                    <p> {{key}}  {{value}}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col" style="width: 200px; overflow: auto;">
+                            <h5>URL- Derinlik 3</h5>
+                            {% for url in url_kumesi_link_3 %}
+                                <p style="margin-top: 35px; margin-bottom:650px">{{url}}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="col"style="width: 200px;">
+                            <h5>Anahtar Kelime/Frekans</h5>
+                            {% for data in url_kumesi_3 %}
+                                <div style="height: 700px">
+                                    {% for key,value in data.items %}
+                                    <p> {{key}}  {{value}}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
             </div>
         </div>
     {% else %}
