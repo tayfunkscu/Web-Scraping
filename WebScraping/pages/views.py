@@ -252,13 +252,12 @@ def calculateSimilarity(top10_1, top10_2, url_2):
     for keys_1 in top10_1.keys():
         if keys_1 in top10_2.keys():
             keyWordCarpim = keyWordCarpim * top10_2[keys_1]
-
+            
     if keyWordCarpim == 1:
         return totalWordCount
-
+    
     for value in frequency.values():
         totalWordCount = totalWordCount + value
-
     result = (keyWordCarpim / totalWordCount) * 100
     return f"{result:.4f}"
 
